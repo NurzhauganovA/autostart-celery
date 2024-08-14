@@ -1,0 +1,70 @@
+version: '3.9'
+
+services:
+    autostart-web:
+        build:
+            context: ../..
+            dockerfile: docker/dev/Dockerfile
+        container_name: autostart-web
+        restart: always
+        env_file:
+            - envs/.env.backend
+        volumes:
+            - ../../backend:/app
+            - static:/app/static
+            - media:/app/media
+        ports:
+            - "7777:8000"
+        depends_on:
+            - autostart-redis
+        command: sh -c "/entrypoint.sh"
+        networks:
+            - autostart-network
+
+    autostart-redis:
+        image: redis:alpine
+        container_name: autostart-redis
+        restart: always
+        ports:
+            - "7778:6379"
+        volumes:
+            - redis_data:/data
+        networks:
+            - autostart-network
+
+    autostart-celery:
+        build:
+            context: ../..
+            dockerfile: docker/dev/Dockerfile
+        container_name: autostart-celery
+        restart: always
+        env_file:
+            - envs/.env.backend
+        depends_on:
+            - autostart-redis
+        volumes:
+            - ../../backend:/app
+        command: celery -A backend worker -l info
+
+    autostart-celery-beat:
+        build:
+            context: ../..
+            dockerfile: docker/dev/Dockerfile
+        container_name: autostart-celery-beat
+        restart: always
+        env_file:
+            - envs/.env.backend
+        depends_on:
+            - autostart-redis
+        volumes:
+            - ../../backend:/app
+        command: celery -A backend beat -l info
+
+volumes:
+    static:
+    media:
+    redis_data:
+
+networks:
+    autostart-network:
+        driver: bridge
