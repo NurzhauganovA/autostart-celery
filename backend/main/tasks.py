@@ -19,14 +19,6 @@ def run_first_script():
 
 
 @shared_task
-def run_second_script():
-    CeleryTask.objects.create(name=f"Run second script at {now}", status="STARTED")
-    response = requests.post(f"{BASE_API_URL}/api/v1/autostart/scripts", json={"part": 2})
-    CeleryTask.objects.create(name=f"Run second script at {now}", status="SUCCESS")
-    return response.json()
-
-
-@shared_task
 def run_third_script():
     CeleryTask.objects.create(name=f"Run third script at {now}", status="STARTED")
     response = requests.post(f"{BASE_API_URL}/api/v1/autostart/scripts", json={"part": 3})
