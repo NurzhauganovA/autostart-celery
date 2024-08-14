@@ -139,7 +139,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     "run_fifth_script": {
         "task": "main.tasks.run_fifth_script",
-        "schedule": crontab(month_of_year="*", day_of_month="*", hour="16", minute="50"),
+        "schedule": crontab(month_of_year="*", day_of_month="*", hour="17", minute="52"),
     },
     "run_sixth_script": {
         "task": "main.tasks.run_sixth_script",
