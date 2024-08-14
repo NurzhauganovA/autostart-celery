@@ -17,7 +17,7 @@ SECRET_KEY = 'django-insecure-tcn3$2&7rjx6h^rhza)y1u!!0n09-wr52zv$py*u8a-%utzss*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "10.10.10.81"]
 
 
 # Application definition
@@ -127,7 +127,7 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_BEAT_SCHEDULE = {
     "run_first_script": {
         "task": "main.tasks.run_first_script",
-        "schedule": crontab(month_of_year="*", day_of_month="*", hour="16", minute="30"),
+        "schedule": crontab(month_of_year="*", day_of_month="*", hour="17", minute="40"),
     },
     "run_second_script": {
         "task": "main.tasks.run_second_script",
